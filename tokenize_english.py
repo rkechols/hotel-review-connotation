@@ -18,7 +18,10 @@ def tokenize_file(rating_level: int) -> List[List[SimpleToken]]:
 	spacy_en = spacy.load(SPACY_ENGLISH_NAME)
 	to_return = list()
 	with open(file_name, "r", encoding=UTF_8) as txt_file:
-		for line_num, review_text in enumerate(txt_file, start=1):
+		for line_num, review_text_ in enumerate(txt_file, start=1):
+			review_text = review_text_.strip()
+			if review_text == "":
+				continue
 			review_tokens: Doc = spacy_en(review_text)
 			these_tokens = list()
 			for t in review_tokens:

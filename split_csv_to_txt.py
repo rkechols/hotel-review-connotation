@@ -1,21 +1,24 @@
 import os
 import re
-from util import get_rating_level_file_name, UTF_8
+from util import get_rating_level_file_name, SPLIT_DIR, UTF_8
 
 
-CSV_FILE_NAME = "data/tripadvisor_hotel_reviews.csv"
+CSV_FILE_NAME = "./data/tripadvisor_hotel_reviews.csv"
 DEAD_LINES_FILE_NAME = "dead_lines.csv"
 CSV_LINE_RE = re.compile(r"\"(.*)\",([0-9])")
+WHITESPACE_RE = re.compile(r"\s+")
 
 
 if __name__ == "__main__":
+	if not os.path.isdir(SPLIT_DIR):
+		os.mkdir(SPLIT_DIR)
 	if os.path.isfile(DEAD_LINES_FILE_NAME):
 		os.remove(DEAD_LINES_FILE_NAME)
 	output_files = dict()
 	# noinspection PyBroadException
 	try:
-		for line_num in range(5):
-			num_stars = line_num + 1
+		for i in range(5):
+			num_stars = i + 1
 			txt_file_name = get_rating_level_file_name(num_stars)
 			if os.path.isfile(txt_file_name):
 				os.remove(txt_file_name)
@@ -33,6 +36,7 @@ if __name__ == "__main__":
 				if num_stars not in output_files:
 					output_files[num_stars] = open(get_rating_level_file_name(num_stars), "w", encoding=UTF_8)
 					print(f"unexpected number of stars {num_stars} found on line {line_num}")
+				text = re.sub(WHITESPACE_RE, " ", text.strip())  # turn any whitespace into a single space
 				print(text, file=output_files[num_stars])
 	except Exception as e:
 		print(f"exception of class {e.__class__.__name__}: {e}")

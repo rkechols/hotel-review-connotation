@@ -1,6 +1,9 @@
 UTF_8 = "utf8"
-TXT_FILE_NAME_F = "data/split/tripadvisor_{}-star.txt"
 SPACY_ENGLISH_NAME = "en"
+
+SPLIT_DIR = "./data/split/"
+TXT_FILE_NAME_F = SPLIT_DIR + "tripadvisor_{}-star.txt"
+
 TOKENIZED_DIR = "./data/tokenized/"
 TOKENIZED_FILE_NAME_F = TOKENIZED_DIR + "{}-star-tokenized.tks"
 
