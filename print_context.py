@@ -9,5 +9,7 @@ def get_context_file_name(word: str, rating_level: int) -> str:
 
 
 if __name__ == "__main__":
+	# tokenize files
 	docs = get_all_tokenized_ratings()
-	print("break")
+	# find tokens in question
+	# TODO

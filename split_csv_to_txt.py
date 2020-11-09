@@ -3,7 +3,7 @@ import re
 from util import get_rating_level_file_name, UTF_8
 
 
-CSV_FILE_NAME = "./data/tripadvisor_hotel_reviews.csv"
+CSV_FILE_NAME = "data/tripadvisor_hotel_reviews.csv"
 DEAD_LINES_FILE_NAME = "dead_lines.csv"
 CSV_LINE_RE = re.compile(r"\"(.*)\",([0-9])")
 
