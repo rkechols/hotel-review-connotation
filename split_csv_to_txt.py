@@ -1,6 +1,6 @@
 import os
 import re
-from constants import TXT_FILE_NAME_F, UTF_8
+from util import get_rating_level_file_name, UTF_8
 
 
 CSV_FILE_NAME = "./data/tripadvisor_hotel_reviews.csv"
@@ -16,7 +16,7 @@ if __name__ == "__main__":
 	try:
 		for line_num in range(5):
 			num_stars = line_num + 1
-			txt_file_name = TXT_FILE_NAME_F.format(num_stars)
+			txt_file_name = get_rating_level_file_name(num_stars)
 			if os.path.isfile(txt_file_name):
 				os.remove(txt_file_name)
 			output_files[num_stars] = open(txt_file_name, "w", encoding=UTF_8)
@@ -31,7 +31,7 @@ if __name__ == "__main__":
 				text = match.group(1)
 				num_stars = int(match.group(2))
 				if num_stars not in output_files:
-					output_files[num_stars] = open(TXT_FILE_NAME_F.format(num_stars), "w", encoding=UTF_8)
+					output_files[num_stars] = open(get_rating_level_file_name(num_stars), "w", encoding=UTF_8)
 					print(f"unexpected number of stars {num_stars} found on line {line_num}")
 				print(text, file=output_files[num_stars])
 	except Exception as e:
