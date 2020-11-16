@@ -6,14 +6,17 @@ from util import count_lemma_in_tokens, get_tokenized_file_name, tokens_to_str, 
 
 
 CONTEXTS_DIR = "./data/contexts/"
-CONTEXT_FILE_NAME_F = CONTEXTS_DIR + "{}_context_{}.txt"
+CONTEXT_FILE_NAME_F = CONTEXTS_DIR + "{}/{}_context_{}.txt"
 
 
 def get_context_file_name(lemma: str, rating_level: int) -> str:
-	return CONTEXT_FILE_NAME_F.format(lemma, rating_level)
+	return CONTEXT_FILE_NAME_F.format(lemma, lemma, rating_level)
 
 
 def find_in_context_all(lemma: str) -> str:
+	lemma_dir = CONTEXTS_DIR + lemma
+	if not os.path.isdir(lemma_dir):
+		os.mkdir(lemma_dir)
 	for i in range(5):
 		rating_level = i + 1
 		doc = read_tks_file(get_tokenized_file_name(rating_level))
