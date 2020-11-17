@@ -56,7 +56,7 @@ def get_all_tokenized_ratings() -> Dict[int, List[List[SimpleToken]]]:
 	token_count = 0
 	for rating_level, doc in to_return.items():
 		this_count = sum(len(rating) for rating in doc)
-		print(f"tokens in all {rating_level}-star ratings: {this_count}")
+		print(f"tokens in all {rating_level}-star reviews: {this_count}")
 		token_count += this_count
 	print("----------")
 	print(f"{token_count} tokens total")
@@ -92,6 +92,14 @@ def read_tks_file(tks_file_name: str) -> List[List[SimpleToken]]:
 				raise ValueError(f"line {line_num} in file {tks_file_name} did not match the token regex: {line}")
 			text, lemma, pos = token_match.group(1), token_match.group(2), token_match.group(3)
 			this_rating.append(SimpleToken(text, lemma, pos))
+	return to_return
+
+
+def read_tks_file_flat(tks_file_name: str) -> List[SimpleToken]:
+	tokens_by_review = read_tks_file(tks_file_name)
+	to_return = list()
+	for review in tokens_by_review:
+		to_return += review
 	return to_return
 
 
