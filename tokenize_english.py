@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import os
 import time
 from os import path
@@ -54,10 +55,18 @@ def get_all_tokenized_ratings() -> Dict[int, List[List[SimpleToken]]]:
 		write_tokens_to_files(to_return)
 	print("----------")
 	token_count = 0
+	domain = list()
+	individual_counts = list()
 	for rating_level, doc in to_return.items():
+		domain.append(rating_level)
 		this_count = sum(len(rating) for rating in doc)
-		print(f"tokens in all {rating_level}-star reviews: {this_count}")
+		individual_counts.append(this_count)
+		print(f"{rating_level}-star reviews:\ttokens={this_count}\treviews={len(doc)}")
 		token_count += this_count
+	plt.bar(domain, individual_counts)
+	plt.xlabel("Rating level (# of stars)")
+	plt.ylabel("# of tokens")
+	plt.show()
 	print("----------")
 	print(f"{token_count} tokens total")
 	print("----------")
