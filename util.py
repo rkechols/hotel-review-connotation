@@ -14,9 +14,6 @@ TOKENIZED_FILE_NAME_F = TOKENIZED_DIR + "{}-star-tokenized.tks"
 SCORES_DIR = "./data/scores/"
 SCORES_FILE_NAME_F = SCORES_DIR + "{}-star_scores.csv"
 
-SCORES_MODIFIED_DIR = "./data/scores-modified/"
-SCORES_FILE_NAME_MODIFIED_F = SCORES_MODIFIED_DIR + "{}-star_scores.csv"
-
 
 def get_rating_level_file_name(rating_level: int) -> str:
 	return TXT_FILE_NAME_F.format(rating_level)
@@ -26,11 +23,8 @@ def get_tokenized_file_name(rating_level: int) -> str:
 	return TOKENIZED_FILE_NAME_F.format(rating_level)
 
 
-def get_scores_file_name(rating_level: int, modified: bool) -> str:
-	if modified:
-		return SCORES_FILE_NAME_MODIFIED_F.format(rating_level)
-	else:
-		return SCORES_FILE_NAME_F.format(rating_level)
+def get_scores_file_name(rating_level: int) -> str:
+	return SCORES_FILE_NAME_F.format(rating_level)
 
 
 def count_lemma_in_tokens(lemma: str, tokens: List[SimpleToken]) -> int:

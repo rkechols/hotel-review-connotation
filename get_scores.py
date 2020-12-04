@@ -5,11 +5,7 @@ from util import get_scores_file_name, UTF_8
 
 
 SCORES_LINE_RE = re.compile(r"\"(.*)\",(.*),(.*),(.*)")
-MODIFIED = False
-if MODIFIED:
-	SEARCH_RESULTS_CSV = "./data/scores-modified/search_results.csv"
-else:
-	SEARCH_RESULTS_CSV = "./data/scores/search_results.csv"
+SEARCH_RESULTS_CSV = "./data/scores/search_results.csv"
 
 
 class Score:
@@ -21,7 +17,7 @@ class Score:
 
 def load_scores(rating_level: int) -> Dict[str, Score]:
 	to_return = dict()
-	scores_file_name = get_scores_file_name(rating_level, MODIFIED)
+	scores_file_name = get_scores_file_name(rating_level)
 	with open(scores_file_name, "r", encoding=UTF_8) as scores_file:
 		first_line = True
 		for line in scores_file:
