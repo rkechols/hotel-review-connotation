@@ -1,8 +1,7 @@
-import sys
 import multiprocessing as mp
 import os
 from tokenize_english import read_tks_file
-from util import count_lemma_in_tokens, get_tokenized_file_name, tokens_to_str, UTF_8
+from util import count_lemma_in_tokens, get_tokenized_file_name, LEMMA_GROUPS_LIST, read_lemmas_file, tokens_to_str, UTF_8
 
 
 CONTEXTS_DIR = "./data/contexts/"
@@ -30,7 +29,8 @@ def find_in_context_all(lemma: str) -> str:
 if __name__ == "__main__":
 	if not os.path.exists(CONTEXTS_DIR):
 		os.mkdir(CONTEXTS_DIR)
-	words = sys.argv[1:]
-	with mp.Pool() as pool:
-		for word in pool.imap_unordered(find_in_context_all, words):
-			print(f"search for \"{word}\" complete")
+	for group in LEMMA_GROUPS_LIST:
+		lemmas = read_lemmas_file(group)
+		with mp.Pool() as pool:
+			for word in pool.imap_unordered(find_in_context_all, lemmas):
+				print(f"search for \"{word}\" complete")

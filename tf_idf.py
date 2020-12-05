@@ -4,12 +4,10 @@ from typing import Dict, List, Set, Tuple
 # from gensim.models import TfidfModel
 from gensim.corpora import Dictionary
 from tokenize_english import read_tks_file_flat
-from util import get_scores_file_name, get_tokenized_file_name, SCORES_DIR, UTF_8
+from util import DICTIONARY_FILE_NAME, get_scores_file_name, get_tokenized_file_name, SCORES_DIR, UTF_8
 
 
 Bow = List[Tuple[int, int]]
-
-DICTIONARY_FILE_NAME = "./data/reviews_dictionary.gendict"
 
 
 def get_lemmatized_documents() -> Dict[int, List[str]]:
@@ -36,6 +34,7 @@ def get_dictionary(documents: Dict[int, List[str]]) -> Dictionary:
 		print("creating dictionary")
 		gensim_dict = Dictionary()
 		gensim_dict.add_documents(documents.values())
+		gensim_dict.compactify()
 		print(f"saving dictionary to {DICTIONARY_FILE_NAME}")
 		gensim_dict.save(DICTIONARY_FILE_NAME)
 	return gensim_dict
