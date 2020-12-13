@@ -5,7 +5,7 @@ from util import LEMMA_GROUPS_LIST, read_lemmas_file, UTF_8
 
 
 MANUAL_SCORES_DIR = "./data/manual/"
-CONTEXT_FILE_NAME_F = "./data/contexts/{}/{}_context{}.txt"
+CONTEXT_FILE_NAME_F = "./data/contexts/{}/{}_context_{}.txt"
 
 
 def get_score(lemma: str, context: str) -> int:
@@ -52,11 +52,12 @@ def read_contexts_files(lemma: str) -> List[str]:
 
 
 def manual_scores(list_name: str, lemmas: List[str]):
-	with open(MANUAL_SCORES_DIR + f"manual_scores_{list_name}.csv", "w", encoding=UTF_8) as out_file:
+	with open(MANUAL_SCORES_DIR + f"manual_scores_{list_name}.csv", "a", encoding=UTF_8) as out_file:
 		print(f"lemma,manual score", file=out_file)
-		for lemma in lemmas:
-			context_list = read_contexts_files(lemma)
-			score = get_average_score(lemma, context_list)
+	for lemma in lemmas:
+		context_list = read_contexts_files(lemma)
+		score = get_average_score(lemma, context_list)
+		with open(MANUAL_SCORES_DIR + f"manual_scores_{list_name}.csv", "a", encoding=UTF_8) as out_file:
 			print(f"{lemma},{score}", file=out_file)
 
 

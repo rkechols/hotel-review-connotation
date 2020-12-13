@@ -5,7 +5,7 @@ from simple_token import SimpleToken
 UTF_8 = "utf8"
 SPACY_ENGLISH_NAME = "en"
 DICTIONARY_FILE_NAME = "./data/reviews_dictionary.gendict"
-LEMMA_GROUPS_LIST = ["random", "quality", "description", "topic"]
+LEMMA_GROUPS_LIST = ["random", "noun", "adjective"]
 
 SPLIT_DIR = "./data/split/"
 TXT_FILE_NAME_F = SPLIT_DIR + "tripadvisor_{}-star.txt"
@@ -18,6 +18,10 @@ SCORES_FILE_NAME_F = SCORES_DIR + "{}-star_scores.csv"
 
 GROUPS_DIR = "./data/lemma_groups/"
 LEMMA_GROUP_FILE_NAME_F = GROUPS_DIR + "{}_lemmas.txt"
+
+SEARCH_RESULTS_GROUP_DIR = "./data/scores/{}/"
+SEARCH_RESULTS_CSV_F = "{}_search_results.csv"
+CORRELATIONS_CSV_F = "{}_correlations.csv"
 
 
 def get_rating_level_file_name(rating_level: int) -> str:
@@ -56,3 +60,15 @@ def read_lemmas_file(group_name: str) -> List[str]:
 			if lemma != "":
 				to_return.append(lemma)
 	return to_return
+
+
+def get_scores_group_dir_name(group_name: str) -> str:
+	return SEARCH_RESULTS_GROUP_DIR.format(group_name)
+
+
+def get_search_results_file_name(group_name: str) -> str:
+	return get_scores_group_dir_name(group_name) + SEARCH_RESULTS_CSV_F.format(group_name)
+
+
+def get_correlation_file_name(group_name: str) -> str:
+	return get_scores_group_dir_name(group_name) + CORRELATIONS_CSV_F.format(group_name)

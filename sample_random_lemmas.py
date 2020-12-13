@@ -11,6 +11,7 @@ SAMPLE_SIZE = 50
 def get_all_lemmas() -> List[str]:
 	gensim_dict = Dictionary.load(DICTIONARY_FILE_NAME)
 	assert isinstance(gensim_dict, Dictionary)
+
 	return [k for k in gensim_dict.token2id]
 
 

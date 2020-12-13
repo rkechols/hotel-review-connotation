@@ -1,11 +1,10 @@
+import os
 import re
-import sys
 from typing import Dict
-from util import get_scores_file_name, UTF_8
+from util import get_scores_file_name, get_search_results_file_name, get_scores_group_dir_name, LEMMA_GROUPS_LIST, read_lemmas_file, UTF_8
 
 
 SCORES_LINE_RE = re.compile(r"\"(.*)\",(.*),(.*),(.*)")
-SEARCH_RESULTS_CSV = "./data/scores/search_results.csv"
 
 
 class Score:
@@ -41,21 +40,23 @@ def find_score(lemma: str, scores: Dict[str, Score]) -> Score:
 
 
 if __name__ == "__main__":
-	words = sys.argv[1:]
-	if len(words) < 1:
-		print("no words to retrieve scores for")
-		exit()
-	word_to_scores = dict()
-	for i_ in range(5):
-		level = i_ + 1
-		level_scores = load_scores(level)
-		for word in words:
-			if word not in word_to_scores:
-				word_to_scores[word] = list()
-			word_to_scores[word].append(find_score(word, level_scores))
-	with open(SEARCH_RESULTS_CSV, "w", encoding=UTF_8) as out_file:
-		print("lemma,1-star,2-star,3-star,4-star,5-star", file=out_file)
-		for word, score_list in word_to_scores.items():
-			word_q = "\"" + word + "\""
-			print(",".join([word_q] + ["{:.8f}".format(s.tf_idf) for s in score_list]), file=out_file)
-	print(f"results printed to {SEARCH_RESULTS_CSV}")
+	for group in LEMMA_GROUPS_LIST:
+		group_dir_name = get_scores_group_dir_name(group)
+		if not os.path.exists(group_dir_name):
+			os.mkdir(group_dir_name)
+		search_results_csv = get_search_results_file_name(group)
+		lemmas_in_group = read_lemmas_file(group)
+		word_to_scores = dict()
+		for i_ in range(5):
+			level = i_ + 1
+			level_scores = load_scores(level)
+			for word in lemmas_in_group:
+				if word not in word_to_scores:
+					word_to_scores[word] = list()
+				word_to_scores[word].append(find_score(word, level_scores))
+		with open(search_results_csv, "w", encoding=UTF_8) as out_file:
+			print("lemma,1-star,2-star,3-star,4-star,5-star", file=out_file)
+			for word, score_list in word_to_scores.items():
+				word_q = "\"" + word + "\""
+				print(",".join([word_q] + ["{:.8f}".format(s.tf_idf) for s in score_list]), file=out_file)
+		print(f"results printed to {search_results_csv}")
