@@ -1,10 +1,9 @@
 import os
 import random
 from typing import List
-from util import LEMMA_GROUPS_LIST, read_lemmas_file, UTF_8
+from util import get_manual_scores_file_name, LEMMA_GROUPS_LIST, MANUAL_SCORES_DIR, read_lemmas_file, UTF_8
 
 
-MANUAL_SCORES_DIR = "./data/manual/"
 CONTEXT_FILE_NAME_F = "./data/contexts/{}/{}_context_{}.txt"
 
 
@@ -55,7 +54,7 @@ def read_contexts_files(lemma: str) -> List[str]:
 
 
 def manual_scores(list_name: str, lemmas: List[str]):
-	manual_scores_file_name = MANUAL_SCORES_DIR + f"manual_scores_{list_name}.csv"
+	manual_scores_file_name = get_manual_scores_file_name(list_name)
 	already_scored = set()
 	if not os.path.exists(manual_scores_file_name):
 		with open(manual_scores_file_name, "a", encoding=UTF_8) as out_file:
@@ -67,7 +66,7 @@ def manual_scores(list_name: str, lemmas: List[str]):
 				already_scored.add(lemma_quotes[1:-1])
 	for lemma in lemmas:
 		if lemma in already_scored:
-			print(f"'{lemma}' already scored")
+			# print(f"'{lemma}' already scored")
 			continue
 		context_list = read_contexts_files(lemma)
 		score = get_average_score(lemma, context_list)

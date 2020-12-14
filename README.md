@@ -25,4 +25,4 @@
 
 #### Part 4: Correlation between Automated and Manual scores
 
-TODO
+1. `final_analysis.py` to run a regression analysis on each of the groups.

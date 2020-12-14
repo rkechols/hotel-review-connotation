@@ -23,6 +23,9 @@ SEARCH_RESULTS_GROUP_DIR = "./data/scores/{}/"
 SEARCH_RESULTS_CSV_F = "{}_search_results.csv"
 CORRELATIONS_CSV_F = "{}_correlations.csv"
 
+MANUAL_SCORES_DIR = "./data/manual/"
+MANUAL_SCORES_CSV_F = MANUAL_SCORES_DIR + "manual_scores_{}.csv"
+
 
 def get_rating_level_file_name(rating_level: int) -> str:
 	return TXT_FILE_NAME_F.format(rating_level)
@@ -72,3 +75,7 @@ def get_search_results_file_name(group_name: str) -> str:
 
 def get_correlation_file_name(group_name: str) -> str:
 	return get_scores_group_dir_name(group_name) + CORRELATIONS_CSV_F.format(group_name)
+
+
+def get_manual_scores_file_name(group_name: str) -> str:
+	return MANUAL_SCORES_CSV_F.format(group_name)
