@@ -26,6 +26,9 @@ def get_score(lemma: str, context: str) -> int:
 
 
 def get_average_score(lemma: str, contexts: List[str], sample_size: int = 20) -> float:
+	if sample_size > len(contexts):
+		print(f"Lemma '{lemma}' does not appear enough to be scored")
+		return -42
 	all_scores = list()
 	for context in random.sample(contexts, sample_size):
 		all_scores.append(get_score(lemma, context))
@@ -52,13 +55,24 @@ def read_contexts_files(lemma: str) -> List[str]:
 
 
 def manual_scores(list_name: str, lemmas: List[str]):
-	with open(MANUAL_SCORES_DIR + f"manual_scores_{list_name}.csv", "a", encoding=UTF_8) as out_file:
-		print(f"lemma,manual score", file=out_file)
+	manual_scores_file_name = MANUAL_SCORES_DIR + f"manual_scores_{list_name}.csv"
+	already_scored = set()
+	if not os.path.exists(manual_scores_file_name):
+		with open(manual_scores_file_name, "a", encoding=UTF_8) as out_file:
+			print(f"lemma,manual score", file=out_file)
+	else:
+		with open(manual_scores_file_name, "r", encoding=UTF_8) as out_file:
+			for line_ in out_file:
+				lemma_quotes = line_.strip().split(",")[0]
+				already_scored.add(lemma_quotes[1:-1])
 	for lemma in lemmas:
+		if lemma in already_scored:
+			print(f"'{lemma}' already scored")
+			continue
 		context_list = read_contexts_files(lemma)
 		score = get_average_score(lemma, context_list)
-		with open(MANUAL_SCORES_DIR + f"manual_scores_{list_name}.csv", "a", encoding=UTF_8) as out_file:
-			print(f"{lemma},{score}", file=out_file)
+		with open(manual_scores_file_name, "a", encoding=UTF_8) as out_file:
+			print(f"\"{lemma}\",{score}", file=out_file)
 
 
 if __name__ == "__main__":
