@@ -50,14 +50,14 @@ if __name__ == "__main__":
 				if lemma not in manual_scores:
 					raise ValueError(f"lemma {lemma} was found in the automated scores but not manual scores (group {group})")
 				manual_score = manual_scores[lemma]
+				automated_scores_list.append(automated_score)
+				manual_scores_list.append(manual_score)
 				print(f"{lemma},{automated_score},{manual_score}", file=output_file)
 				if lemma not in all_lemmas_set:  # don't duplicate lemmas in the combined list
 					all_lemmas_set.add(lemma)
 					all_lemmas.append(lemma)
 					all_automated_scores.append(automated_score)
-					automated_scores_list.append(automated_score)
 					all_manual_scores.append(manual_score)
-					manual_scores_list.append(manual_score)
 			for lemma in manual_scores:
 				if lemma not in automated_scores:
 					raise ValueError(f"lemma {lemma} was found in the manual scores but not automated scores (group {group})")
