@@ -1,6 +1,6 @@
-from typing import Dict, List
 import numpy as np
-from util import get_tf_idf_file_name, SLOPES_FILE_NAME, UTF_8
+from typing import Dict, List
+from util import AUTOMATED_DIR, get_tf_idf_file_name, SLOPES_FILE_NAME, UTF_8
 
 
 RATING_LEVELS = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
@@ -8,6 +8,8 @@ X_SQUARED_SUM = (RATING_LEVELS * RATING_LEVELS).sum()
 SUM_X = RATING_LEVELS.sum()
 SQUARE_OF_SUM_X = pow(SUM_X, 2)
 N = RATING_LEVELS.shape[0]
+
+DISTRIBUTION_FILE_NAME = AUTOMATED_DIR + "tfidf_distributions.csv"
 
 
 def get_score_distributions() -> Dict[str, List[float]]:
@@ -38,9 +40,12 @@ def calculate_least_squares_slope(y: np.ndarray) -> float:
 
 if __name__ == "__main__":
 	all_tf_idf_distributions = get_score_distributions()
-	with open(SLOPES_FILE_NAME, "w", encoding=UTF_8) as slopes_file:
-		print("lemma,slope", file=slopes_file)
-		for lemma_, distribution in all_tf_idf_distributions.items():
-			slope = calculate_least_squares_slope(np.array(distribution))
-			print(f"{lemma_},{slope}", file=slopes_file)
+	with open(DISTRIBUTION_FILE_NAME, "w", encoding=UTF_8) as distributions_file:
+		print(",".join(["lemma"] + [str(x + 1) for x in range(N)]), file=distributions_file)
+		with open(SLOPES_FILE_NAME, "w", encoding=UTF_8) as slopes_file:
+			print("lemma,slope", file=slopes_file)
+			for lemma_, distribution in all_tf_idf_distributions.items():
+				print(",".join([lemma_] + ["{:.8f}".format(tf_idf) for tf_idf in distribution]), file=distributions_file)
+				slope = calculate_least_squares_slope(np.array(distribution))
+				print(f"{lemma_},{slope}", file=slopes_file)
 	print("completed calculating estimated slopes of least-squares solutions of TF-IDF scores with rating level")
