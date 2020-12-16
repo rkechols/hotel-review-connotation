@@ -4,7 +4,7 @@ from typing import Dict, List, Set, Tuple
 # from gensim.models import TfidfModel
 from gensim.corpora import Dictionary
 from tokenize_english import read_tks_file_flat
-from util import DICTIONARY_FILE_NAME, get_scores_file_name, get_tokenized_file_name, SCORES_DIR, UTF_8
+from util import DICTIONARY_FILE_NAME, get_tf_idf_file_name, get_tokenized_file_name, UTF_8
 
 
 Bow = List[Tuple[int, int]]
@@ -91,12 +91,8 @@ def get_tf_idf_scores(corpus: Dict[int, Bow], token_counts: Dict[int, int], bags
 
 
 def save_scores_to_files(dictionary: Dictionary, scores: Dict[int, List[ScoreInfo]]):
-	scores_dir = SCORES_DIR
-	print(f"saving scores to files in {scores_dir}")
-	if not os.path.isdir(scores_dir):
-		os.mkdir(scores_dir)
 	for rating_level, scores_list in scores.items():
-		with open(get_scores_file_name(rating_level), "w", encoding=UTF_8) as scores_file:
+		with open(get_tf_idf_file_name(rating_level), "w", encoding=UTF_8) as scores_file:
 			# print the header
 			print("lemma,score,count in doc,in how many docs", file=scores_file)
 			for s in scores_list:

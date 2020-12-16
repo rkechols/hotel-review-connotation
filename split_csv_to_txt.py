@@ -1,7 +1,7 @@
 import os
 import re
 import string
-from util import get_rating_level_file_name, SPLIT_DIR, UTF_8
+from util import get_rating_level_file_name, UTF_8
 
 
 CSV_FILE_NAME = "./data/tripadvisor_hotel_reviews.csv"
@@ -11,8 +11,6 @@ WHITESPACE_PUNCTUATION_RE = re.compile(rf"[\s{string.punctuation}]+")
 
 
 if __name__ == "__main__":
-	if not os.path.isdir(SPLIT_DIR):
-		os.mkdir(SPLIT_DIR)
 	if os.path.isfile(DEAD_LINES_FILE_NAME):
 		os.remove(DEAD_LINES_FILE_NAME)
 	output_files = dict()

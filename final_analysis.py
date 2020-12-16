@@ -1,7 +1,6 @@
-import os
 from typing import Dict, List, Tuple
 from scipy.stats import pearsonr as pearson_r
-from util import get_correlation_file_name, get_manual_scores_file_name, LEMMA_GROUPS_LIST, UTF_8
+from util import ensure_dir, get_manual_scores_file_name, get_search_results_file_name, LEMMA_GROUPS_LIST, UTF_8
 
 
 OUTPUT_DIR = "./data/final/"
@@ -27,15 +26,14 @@ def read_scores_from_file(file_name: str) -> Dict[str, float]:
 
 
 if __name__ == "__main__":
-	if not os.path.exists(OUTPUT_DIR):
-		os.mkdir(OUTPUT_DIR)
+	ensure_dir(OUTPUT_DIR)
 	all_lemmas_set = set()
 	all_lemmas = list()
 	all_automated_scores = list()
 	all_manual_scores = list()
 	for group in LEMMA_GROUPS_LIST:
 		# read scores from automated analysis
-		automated_scores_file_name = get_correlation_file_name(group)
+		automated_scores_file_name = get_search_results_file_name(group)
 		automated_scores = read_scores_from_file(automated_scores_file_name)
 		automated_scores_list = list()
 		# read scores from manual analysis

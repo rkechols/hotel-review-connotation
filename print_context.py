@@ -1,7 +1,7 @@
 import multiprocessing as mp
 import os
 from tokenize_english import read_tks_file
-from util import count_lemma_in_tokens, get_tokenized_file_name, LEMMA_GROUPS_LIST, read_lemmas_file, tokens_to_str, UTF_8
+from util import count_lemma_in_tokens, ensure_dir, get_tokenized_file_name, LEMMA_GROUPS_LIST, read_lemmas_file, tokens_to_str, UTF_8
 
 
 CONTEXTS_DIR = "./data/contexts/"
@@ -14,8 +14,7 @@ def get_context_file_name(lemma: str, rating_level: int) -> str:
 
 def find_in_context_all(lemma: str) -> str:
 	lemma_dir = CONTEXTS_DIR + lemma
-	if not os.path.isdir(lemma_dir):
-		os.mkdir(lemma_dir)
+	ensure_dir(lemma_dir)
 	for i in range(5):
 		rating_level = i + 1
 		doc = read_tks_file(get_tokenized_file_name(rating_level))
@@ -29,8 +28,7 @@ def find_in_context_all(lemma: str) -> str:
 
 
 if __name__ == "__main__":
-	if not os.path.exists(CONTEXTS_DIR):
-		os.mkdir(CONTEXTS_DIR)
+	ensure_dir(CONTEXTS_DIR)
 	for group in LEMMA_GROUPS_LIST:
 		lemmas = read_lemmas_file(group)
 		with mp.Pool() as pool:

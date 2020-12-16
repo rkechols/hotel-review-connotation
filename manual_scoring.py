@@ -1,7 +1,7 @@
 import os
 import random
 from typing import List
-from util import get_manual_scores_file_name, LEMMA_GROUPS_LIST, MANUAL_SCORES_DIR, read_lemmas_file, UTF_8
+from util import get_manual_scores_file_name, LEMMA_GROUPS_LIST, read_lemmas_file, UTF_8
 
 
 CONTEXT_FILE_NAME_F = "./data/contexts/{}/{}_context_{}.txt"
@@ -75,7 +75,5 @@ def manual_scores(list_name: str, lemmas: List[str]):
 
 
 if __name__ == "__main__":
-	if not os.path.exists(MANUAL_SCORES_DIR):
-		os.mkdir(MANUAL_SCORES_DIR)
 	for group in LEMMA_GROUPS_LIST:
 		manual_scores(group, read_lemmas_file(group))
